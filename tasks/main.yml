@@ -1,0 +1,38 @@
+---
+# Based on https://github.com/tianon/dockerfiles/blob/master/sbin-init/ubuntu/upstart/14.04/
+- name: Copy init-fake.conf
+  copy:
+    src: init-fake.conf
+    dest: /etc/init/fake-container-events.conf
+
+- name: undo some leet hax of the base image
+  file:
+    path: "{{ item }}"
+    state: absent
+  loops:
+    - /usr/sbin/policy-rc.d
+    - /sbin/initctl
+
+- name: undo some leet hax of the base image
+  command: dpkg-divert --rename --remove /sbin/initctl
+
+- name: Remove ondemand package
+  service:
+    name: ondemand
+    state: absent
+
+- name: Remove pointless services
+  command: dpkg-divert --local --rename --add {{ item }}
+  loops:
+    - /etc/init/u*.conf
+    - /etc/init/mounted-dev.conf
+    - /etc/init/mounted-proc.conf
+    - /etc/init/mounted-run.conf
+    - /etc/init/mounted-tmp.conf
+    - /etc/init/mounted-var.conf
+    - /etc/init/hostname.conf
+    - /etc/init/networking.conf
+    - /etc/init/tty*.conf
+    - /etc/init/plymouth*.conf
+    - /etc/init/hwclock*.conf
+    - /etc/init/module*.conf

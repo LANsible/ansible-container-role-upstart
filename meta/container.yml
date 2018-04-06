@@ -1,0 +1,9 @@
+---
+image: ubuntu:14.04
+labels:
+  maintainer: Wilmar den Ouden <info@wilmardenouden.nl>
+environment:
+  container: docker
+stop_signal: SIGRTMIN+3
+entrypoint:
+  - /sbin/init
