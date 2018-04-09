@@ -9,7 +9,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  loops:
+  loop:
     - /usr/sbin/policy-rc.d
     - /sbin/initctl
 
@@ -23,7 +23,7 @@
 
 - name: Remove pointless services
   command: dpkg-divert --local --rename --add {{ item }}
-  loops:
+  loop:
     - /etc/init/u*.conf
     - /etc/init/mounted-dev.conf
     - /etc/init/mounted-proc.conf
