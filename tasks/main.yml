@@ -36,3 +36,6 @@
     - /etc/init/plymouth*.conf
     - /etc/init/hwclock*.conf
     - /etc/init/module*.conf
+
+- include_role:
+    name: cleanup
