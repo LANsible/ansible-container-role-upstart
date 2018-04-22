@@ -12,6 +12,7 @@
   loop:
     - /usr/sbin/policy-rc.d
     - /sbin/initctl
+  changed_when: false
 
 - name: undo some more leet hax of the base image
   command: "{{ item }}"
