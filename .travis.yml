@@ -21,7 +21,6 @@ install:
 
 script:
   - ansible --version
-  - ansible-galaxy install -r requirements.yml
   - molecule test
 
 notifications:
