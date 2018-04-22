@@ -22,7 +22,7 @@
     state: absent
 
 - name: Remove pointless services
-  command: dpkg-divert --local --rename --add {{ item }}
+  command: "dpkg-divert --local --rename --add {{ item }}"
   loop:
     - /etc/init/u*.conf
     - /etc/init/mounted-dev.conf
