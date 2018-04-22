@@ -14,15 +14,15 @@
     - /sbin/initctl
 
 - name: undo some leet hax of the base image
-  command: dpkg-divert --rename --remove /sbin/initctl
-
-- name: Remove ondemand package
-  service:
-    name: ondemand
-    state: absent
+  command: "{{ item }}"
+  changed_when: false
+  loop:
+    - dpkg-divert --rename --remove /sbin/initctl
+    - usr/sbin/update-rc.d -f ondemand remove
 
 - name: Remove pointless services
   command: "dpkg-divert --local --rename --add {{ item }}"
+  changed_when: false
   loop:
     - /etc/init/u*.conf
     - /etc/init/mounted-dev.conf
@@ -37,5 +37,12 @@
     - /etc/init/hwclock*.conf
     - /etc/init/module*.conf
 
-- include_role:
+- name: Cleanout fstab
+  copy:
+    content: "# /lib/init/fstab: cleared out for bare-bones Docker"
+    dest: /lib/init/fstab
+    force: true
+
+- name: Include cleanup
+  include_role:
     name: cleanup

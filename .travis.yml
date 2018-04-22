@@ -1,0 +1,30 @@
+---
+dist: trusty
+language: python
+sudo: required
+cache:
+  pip: true
+
+env:
+  global:
+    - fast_finish: true
+
+services:
+  - docker
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install --only-upgrade docker-ce -y
+
+install:
+  - pip install ansible molecule docker-py
+
+script:
+  - ansible --version
+  - ansible-galaxy install -r requirements.yml
+  - molecule test
+
+notifications:
+  email:
+    on_failure: change
+    on_success: never

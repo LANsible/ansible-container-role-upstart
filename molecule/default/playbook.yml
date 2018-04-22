@@ -1,8 +1,14 @@
 ---
-- name: Lint
+- name: Converge
   hosts: all
+  gather_facts: false
+
+  pre_tasks:
+    - name: Install python
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: false
+    - name: Gather facts
+      setup:
+
   roles:
-    - role: bootstrap
-    - role: cleanup
-    - role: systemd
-    - role: upstart
+    - role: ansible-container-role-upstart
