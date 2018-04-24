@@ -9,7 +9,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  loop:
+  with_items:
     - /usr/sbin/policy-rc.d
     - /sbin/initctl
   changed_when: false
@@ -17,14 +17,14 @@
 - name: undo some more leet hax of the base image
   command: "{{ item }}"
   changed_when: false
-  loop:
+  with_items:
     - dpkg-divert --rename --remove /sbin/initctl
     - usr/sbin/update-rc.d -f ondemand remove
 
 - name: Remove pointless services
   command: "dpkg-divert --local --rename --add {{ item }}"
   changed_when: false
-  loop:
+  with_items:
     - /etc/init/u*.conf
     - /etc/init/mounted-dev.conf
     - /etc/init/mounted-proc.conf
