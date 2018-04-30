@@ -24,8 +24,8 @@
 # See https://github.com/moby/moby/issues/1024
 - name: workaround for upstart problems
   file:
-    src: /sbin/initctl
-    dest: /bin/true
+    src: /bin/true
+    dest: /sbin/initctl
     state: link
 
 - name: Remove pointless services
