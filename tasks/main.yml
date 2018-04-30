@@ -18,7 +18,7 @@
   command: "{{ item }}"
   changed_when: false
   with_items:
-    - dpkg-divert --rename --remove /sbin/initctl
+    - dpkg-divert --local --rename --remove /sbin/initctl
     - usr/sbin/update-rc.d -f ondemand remove
 
 # See https://github.com/moby/moby/issues/1024
