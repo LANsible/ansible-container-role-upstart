@@ -23,7 +23,7 @@
 
 # See https://github.com/moby/moby/issues/1024
 - name: workaround for upstart problems
-  command: ln -s /bin/true /sbin/initctl
+  command: ln -sf /sbin/initctl.distrib /sbin/initctl
 
 - name: Remove pointless services
   command: "dpkg-divert --local --rename --add {{ item }}"
