@@ -1,53 +1,8 @@
 ---
-# Based on https://github.com/tianon/dockerfiles/blob/master/sbin-init/ubuntu/upstart/14.04/
-- name: Copy init-fake.conf
-  copy:
-    src: init-fake.conf
-    dest: /etc/init/fake-container-events.conf
-
-- name: undo some leet hax of the base image
-  file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - /usr/sbin/policy-rc.d
-    - /sbin/initctl
-  changed_when: false
-
-- name: undo some more leet hax of the base image
-  command: "{{ item }}"
-  changed_when: false
-  with_items:
-    - dpkg-divert --local --rename --remove /sbin/initctl
-    - usr/sbin/update-rc.d -f ondemand remove
-
-# See https://github.com/moby/moby/issues/1024
-- name: workaround for upstart problems
-  command: ln -sf /sbin/initctl.distrib /sbin/initctl
-  changed_when: false
-
-- name: Remove pointless services
-  command: "dpkg-divert --local --rename --add {{ item }}"
-  changed_when: false
-  with_items:
-    - /etc/init/u*.conf
-    - /etc/init/mounted-dev.conf
-    - /etc/init/mounted-proc.conf
-    - /etc/init/mounted-run.conf
-    - /etc/init/mounted-tmp.conf
-    - /etc/init/mounted-var.conf
-    - /etc/init/hostname.conf
-    - /etc/init/networking.conf
-    - /etc/init/tty*.conf
-    - /etc/init/plymouth*.conf
-    - /etc/init/hwclock*.conf
-    - /etc/init/module*.conf
-
-- name: Cleanout fstab
-  copy:
-    content: "# /lib/init/fstab: cleared out for bare-bones Docker"
-    dest: /lib/init/fstab
-    force: true
+- name: Install initscripts
+  package:
+    name: initscripts
+    state: present
 
 - name: Include cleanup
   include_role:
